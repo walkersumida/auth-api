@@ -35,6 +35,7 @@
         })
         .then(function(user) {
           alert('Welcome ' + user.name + '!');
+          location.reload();
         })
         .fail(function(resp) {
           alert('Authentication failure: ' + resp.errors.join(' '));
