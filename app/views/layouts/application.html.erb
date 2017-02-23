@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AuthApi</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+    <!-- dependencies - these should come BEFORE jToker -->
+    <script src='http://127.0.0.1:8080/node_modules/j-toker/node_modules/jquery/dist/jquery.js'></script>
+    <script src='http://127.0.0.1:8080/node_modules/j-toker/node_modules/jquery.cookie/jquery.cookie.js'></script>
+    <script src='http://127.0.0.1:8080/node_modules/j-toker/node_modules/jquery-deparam/jquery-deparam.js'></script>
+    <script src='http://127.0.0.1:8080/node_modules/j-toker/node_modules/pubsub-js/src/pubsub.js'></script>
+
+    <!-- this should come AFTER the preceeding files -->
+    <script src='http://127.0.0.1:8080/node_modules/j-toker/dist/jquery.j-toker.js'></script>
+
+    <script type="text/javascript">
+     $.auth.configure({
+       apiUrl: 'http://localhost:3000',
+     });
+     $.auth.buildOAuthUrl = function(configName, params) {
+       var config = this.getConfig(configName),
+           oAuthUrl = this.getConfig().apiUrl + config.authProviderPaths['google'] +
+                      '?auth_origin_url='+encodeURIComponent(window.location.href) +
+                      '&omniauth_window_type=newWindow' +
+                      '&config_name='+encodeURIComponent(configName || this.getCurrentConfigName());
+       return oAuthUrl;
+     }
+
+     function login() {
+       $.auth
+        .oAuthSignIn({
+          provider: 'google'
+        })
+        .then(function(user) {
+          alert('Welcome ' + user.name + '!');
+        })
+        .fail(function(resp) {
+          alert('Authentication failure: ' + resp.errors.join(' '));
+        });
+     }
+
+     function logout() {
+       $.auth.signOut();
+     }
+    </script>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
