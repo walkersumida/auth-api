@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  get 'top/index'
-  get 'top/show'
+  get 'auth/new'
+  get 'home/index'
 
-  root 'top#index'
+  root 'auth#new'
 
   mount_devise_token_auth_for 'User', at: 'auth', controllers: {
     sessions: 'users/sessions'
