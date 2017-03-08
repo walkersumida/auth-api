@@ -45,3 +45,11 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+if "development" == ENV.fetch("RAILS_ENV") { "development" }
+  ssl_bind '127.0.0.1', '3000', {
+    key: "config/server.key",
+    cert: "config/server.crt",
+    verify_mode: "none"
+  }
+end
